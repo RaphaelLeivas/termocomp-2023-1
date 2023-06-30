@@ -5,7 +5,7 @@ library(flextable)
 dpdz <- -12.928
 mu <- 1.01 * 10^-3
 R <- 25 * 10^-3
-N <- 20 # numero de pontos analisados 
+N <- 50 # numero de pontos analisados 
 dr <- R/N # passo no espaço
 
 N <- N + 1
@@ -19,7 +19,7 @@ plot(
   xlab = "Posição radial (mm)",
   ylab = "Velocidade (m/s)",
   xlim = c(0, max(r_seq)),
-  ylim = c(0, 3 * max(u_analytical))
+  ylim = c(0, 1.5 * max(u_analytical))
 )
 
 lines(r_seq, u_analytical, lwd = 2, col = "red")
@@ -38,11 +38,10 @@ for (ri in r_seq) {
   
   if (ri == 0) {
     # condição de simetria
-    # u0 = u1 ==> u0 - u1 = 0
-    A[line, line + 1] <- -1
-    A[line, line] <- 1
+    A[line, line + 1] <- 1
+    A[line, line] <- -1
     
-    b[line] <- 0
+    b[line] <- (dpdz / mu) * (1/4) * dr^2
   } else if (ri == R) {
     # na borda do cano, velocidade nula (cond de contorno)
     # assim temos 1 * u_R = 0 ==> u_R = 0
@@ -51,16 +50,16 @@ for (ri in r_seq) {
     b[line] <- 0
   } else {
     # no interno
-    A[line, line + 1] <- 1 + ri
-    A[line, line] <- -1 - 2 * ri
-    A[line, line - 1] <- ri
+    A[line, line + 1] <- 1 + ri / dr
+    A[line, line] <- -1 - 2 * ri / dr
+    A[line, line - 1] <- ri / dr
     
     b[line] <- (dpdz / mu) * ri * dr
   }
 }
 
 u_numerical <- solve(A) %*% b
-lines(r_seq, u_numerical / 1, lwd = 2, col = "blue")
+lines(r_seq, u_numerical, lwd = 2, col = "blue")
 
 
 
