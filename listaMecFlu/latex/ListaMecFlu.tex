@@ -1,0 +1,73 @@
+\documentclass[12pt]{scrartcl}
+
+% packages
+\usepackage[
+    a4paper, total={18cm, 26cm},
+    left=0.75in,
+    right=0.75in,
+    top=0.75in,
+    bottom=0.50in,
+    footskip=15pt
+]{geometry}
+\usepackage{lastpage}
+\usepackage{graphicx} % \includegraphics
+\usepackage{amsmath, esint} % math
+\usepackage{steinmetz} % \phase
+\usepackage{import} % \import
+\usepackage{esdiff} % \diff
+\usepackage{fancyhdr} % header and footer
+
+\makeatletter
+\def\today{%
+  \two@digits{\the\day}/%
+  \ifcase\month\or%
+  01\or 02\or 03\or 04\or 05\or 06\or%
+  07\or 08\or 09\or 10\or 11\or 12\fi/%
+  \number\year%
+}
+\makeatother
+
+% configs
+\setlength{\parindent}{0pt}
+
+% comandos
+\renewcommand{\familydefault}{\sfdefault}
+\newcommand{\un}[1]{\;\textrm{#1}}
+\newcommand{\logo}{\quad \Rightarrow \quad}
+\newcommand{\fase}[1]{\ensuremath{\phase{{#1}^{\circ}}}}
+
+\newcommand*\VF[1]{\mathbf{#1}}
+\newcommand*\dif{\mathop{}\!\mathrm{d}}
+
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\fancyhead{}
+\fancyhead[L]{Programa de Moniiiitoria de Graduuação - Cálculo III}
+\fancyhead[R]{Data: \today}
+\fancyfoot{}
+\fancyfoot[R]{Pág. \thepage \; / \pageref{LastPage}}
+
+\begin{center}
+    Monitor: Raphael Henrique Braga Leivas \\[20pt]
+
+    Quaisquer dúvidas na resolução abaixo pode entrar em contato no
+    moodle ou na sala XXX nos horários abaixo:  \\[10pt]
+
+    \begin{tabular}{l}
+        Segunda-feira: \quad 08:00 as 12:00 \\
+        Terça-feira:   \quad 08:00 as 12:00 \\
+        Quarta-feira:  \quad   08:00 as 12:00  \\
+        Quinta-feira:  \quad  08:00 as 12:00  \\
+        Sexta-feira:   \quad 08:00 as 12:00 0000 \\
+    \end{tabular}
+\end{center}
+
+\hrule
+
+% Prova 01
+\import{../q1}{q1.tex}
+
+\end{document}

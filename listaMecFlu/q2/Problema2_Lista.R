@@ -5,7 +5,7 @@ library(flextable)
 dpdz <- -12.928
 mu <- 1.01 * 10^-3
 R <- 25 * 10^-3
-N <- 50 # numero de pontos analisados 
+N <- 25 # numero de pontos analisados 
 dr <- R/N # passo no espaço
 
 N <- N + 1
@@ -19,7 +19,7 @@ plot(
   xlab = "Posição radial (mm)",
   ylab = "Velocidade (m/s)",
   xlim = c(0, max(r_seq)),
-  ylim = c(0, 1.5 * max(u_analytical))
+  ylim = c(0, max(u_analytical))
 )
 
 lines(r_seq, u_analytical, lwd = 2, col = "red")
