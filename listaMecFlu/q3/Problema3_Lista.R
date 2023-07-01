@@ -4,13 +4,14 @@ dpdx <- -178800
 mu <- 1.49
 h <- 5 * 10^-3
 U <- 1
-N <- 100 # numero de pontos analisados 
+N <- 10 # numero de pontos analisados 
 dy <- 2 * h/N # passo no espaço
 
 N <- N + 1 # ajuste posicao incial
 
 y_seq <- seq(from = -h, to = h, by = dy)
-u_analytical <- (U/2) * (1 + y_seq/h) + ((-dpdx * h^2) / (2 * mu * U)) * (1 - y_seq^2 / h^2) * U
+y_seq_an <- seq(from = -h, to = h, by = 10^-6)
+u_analytical <- (U/2) * (1 + y_seq_an/h) + ((-dpdx * h^2) / (2 * mu * U)) * (1 - y_seq_an^2 / h^2) * U
 
 plot(
   NULL,
@@ -21,7 +22,7 @@ plot(
   ylim = c(0, max(u_analytical))
 )
 
-lines(y_seq, u_analytical, lwd = 2, col = "red")
+lines(y_seq_an, u_analytical, lwd = 2, col = "red")
 
 # solucao numerica
 
@@ -56,5 +57,5 @@ for (yi in y_seq) {
 }
 
 u_numerical <- solve(A) %*% b
-lines(y_seq, u_numerical, lwd = 4, col = "blue", lty = 3)
+lines(y_seq, u_numerical, lwd = 2, col = "blue", lty = 1)
 
