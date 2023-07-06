@@ -1,10 +1,14 @@
-\documentclass[12pt]{scrartcl}
+\documentclass[12pt]{scrartcl} 
+
+\twocolumn
+
+\setlength{\columnsep}{1cm}
 
 % packages
 \usepackage[
     a4paper, total={18cm, 26cm},
-    left=0.75in,
-    right=0.75in,
+    left=0.50in,
+    right=0.50in,
     top=0.75in,
     bottom=0.50in,
     footskip=15pt
@@ -16,19 +20,11 @@
 \usepackage{import} % \import
 \usepackage{esdiff} % \diff
 \usepackage{fancyhdr} % header and footer
-
-\makeatletter
-\def\today{%
-  \two@digits{\the\day}/%
-  \ifcase\month\or%
-  01\or 02\or 03\or 04\or 05\or 06\or%
-  07\or 08\or 09\or 10\or 11\or 12\fi/%
-  \number\year%
-}
-\makeatother
+\usepackage[portuguese]{babel}
+\usepackage{indentfirst}
 
 % configs
-\setlength{\parindent}{0pt}
+\setlength{\parindent}{1cm}
 
 % comandos
 \renewcommand{\familydefault}{\sfdefault}
@@ -39,33 +35,44 @@
 \newcommand*\VF[1]{\mathbf{#1}}
 \newcommand*\dif{\mathop{}\!\mathrm{d}}
 
-
 \begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \begin{Large}
+            Universidade Federal de Minas Gerais - UFMG\\
+            Curso de Graduação em Engenharia de Sistemas\\
+
+            \vspace{5.0cm}
+
+
+            EMA255 - Fluidos e Termodinâmica Computacional
+
+            \vspace{5.0cm}
+
+            Lista de Exercícios de Dinâmica dos Fluidos
+            \vspace*{1cm}
+
+            \textbf{Aluno: Raphael Henrique Braga Leivas}\\
+            \vspace*{1cm}
+            Matrícula: 2020028101
+
+            \vspace{7cm}
+
+            Belo Horizonte\\
+            \vspace*{1cm}
+            Semestre 2023/1
+        \end{Large}
+    \end{center}
+\end{titlepage}
 
 \pagestyle{fancy}
 
 \fancyhead{}
-\fancyhead[L]{Programa de Moniiiitoria de Graduuação - Cálculo III}
-\fancyhead[R]{Data: \today}
+\fancyhead[L]{EMA255 - Fluidos e Termodinâmica Computacional}
+\fancyhead[R]{Lista de Exercícios de Dinâmica dos Fluidos}
 \fancyfoot{}
 \fancyfoot[R]{Pág. \thepage \; / \pageref{LastPage}}
-
-\begin{center}
-    Monitor: Raphael Henrique Braga Leivas \\[20pt]
-
-    Quaisquer dúvidas na resolução abaixo pode entrar em contato no
-    moodle ou na sala XXX nos horários abaixo:  \\[10pt]
-
-    \begin{tabular}{l}
-        Segunda-feira: \quad 08:00 as 12:00 \\
-        Terça-feira:   \quad 08:00 as 12:00 \\
-        Quarta-feira:  \quad   08:00 as 12:00  \\
-        Quinta-feira:  \quad  08:00 as 12:00  \\
-        Sexta-feira:   \quad 08:00 as 12:00 0000 \\
-    \end{tabular}
-\end{center}
-
-\hrule
 
 % Prova 01
 \import{../q1}{q1.tex}

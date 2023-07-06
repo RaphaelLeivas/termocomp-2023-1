@@ -4,7 +4,7 @@ dpdx <- -178800
 mu <- 1.49
 h <- 5 * 10^-3
 U <- 1
-N <- 10 # numero de pontos analisados 
+N <- 8 # numero de pontos analisados 
 dy <- 2 * h/N # passo no espaço
 
 N <- N + 1 # ajuste posicao incial

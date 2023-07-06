@@ -5,7 +5,7 @@ library(flextable)
 dpdz <- -12.928
 mu <- 1.01 * 10^-3
 R <- 25 * 10^-3
-N <- 25 # numero de pontos analisados 
+N <- 50 # numero de pontos analisados 
 dr <- R/N # passo no espaço
 
 N <- N + 1
