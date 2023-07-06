@@ -1,0 +1,103 @@
+
+\section{Segunda Questão (9 pts)}
+
+\subsection{Análise Analítica}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+O escoamento de um fluido de viscosidade $\mu$ e massa específica $\rho$,
+plenamente desenvolvido em regime permanente, em coordenadas cilíndricas,
+é modelado pela equação diferencial 
+
+\[ -\frac{1}{\rho} \diff{p}{z} + \frac{\mu}{\rho} \frac{1}{r} \frac{d}{dr} \left(r\diff{u}{r}\right) = 0 \]
+
+\noindent note que podemos cancelar a massa específica $\rho$, obtendo
+
+\begin{equation}\label{eq:modeloQ2}
+    \frac{1}{r} \frac{d}{dr} \left(r\diff{u}{r}\right) = \diff{p}{z} \frac{1}{\mu}
+\end{equation}
+
+Com um gradiente de pressão constante, temos que a velocidade axial $u$ 
+é uma função de apenas uma variável $r$. Assim, temos as condições de contorno:
+
+\begin{equation}\label{eq:modeloQ2Contorno}
+    \begin{cases}
+        u(0) = \un{simetria} \logo \diff{u}{r} = 0,\\
+        u(R) = 0 \\
+    \end{cases}
+\end{equation}
+
+\noindent onde $R$ é o raio da tubulação por onde o fluido está escoando. Quando 
+$r = R$ estamos em contato com as paredes da tubulação, que naturalmente têm 
+velocidade nula. A primeira condição de contorno (simetria) é consequência do sistema de coordenadas
+cilíndricas adotado.
+
+Como \eqref{eq:modeloQ2} é uma EDO de primeira ordem, podemos tentar obter uma solução 
+analítica por integração direta. 
+
+\[ \int \frac{d}{dr} \left(r\diff{u}{r}\right) \, dr = \int r \diff{p}{z} \frac{1}{\mu} \, dr \]
+
+\[ r \diff{u}{r} = \frac{r^2}{2} \diff{p}{z} \frac{1}{\mu} + C_1 \]
+
+\[ \int \diff{u}{r} \, dr = \int  \frac{r}{2} \diff{p}{z} \frac{1}{\mu} + \frac{C_1}{r} \, dr \]
+
+\begin{equation}\label{eq:Q2AnaliticGeral}
+    u(r) = \frac{r^2}{4} \diff{p}{z} \frac{1}{\mu} + C_1 ln (r) + C_2
+\end{equation}
+
+A equação \eqref{eq:Q2AnaliticGeral} é a solução geral para a EDO \eqref{eq:modeloQ2}.
+Para que ela atenda às condições de contorno de \eqref{eq:modeloQ2Contorno}, de imediato
+temos $C_1 = 0$, pois o logaritmo natural não está definido para $r = 0$,
+sendo que fisicamente já sabemos que há uma velocidade no centro da tubulação. Assim,
+\eqref{eq:Q2AnaliticGeral} se reduz a 
+
+\[ u(r) = \frac{r^2}{4} \diff{p}{z} \frac{1}{\mu} + C_2 \]
+
+A constante $C_2$ pode ser identificada usando a condição de contorno $u(R) = 0$:
+
+\[ 0 = \frac{R^2}{4} \diff{p}{z} \frac{1}{\mu} + C_2 \]
+
+\[ C_2 = - \frac{R^2}{4} \diff{p}{z} \frac{1}{\mu} \]
+
+Assim, a solução analítica do problema é 
+
+\[ u(r) = \frac{r^2}{4} \diff{p}{z} \frac{1}{\mu} - \frac{R^2}{4} \diff{p}{z} \frac{1}{\mu}  \]
+
+\begin{equation}\label{eq:Q2Analitic}
+    u(r) = \frac{1}{4} \diff{p}{z} \frac{1}{\mu} \left(r^2 - R^2\right) 
+\end{equation}
+
+No problema temos os seguintes parâmetros:
+
+\begin{itemize}
+    \item Raio do tubo: $R=25 \un{mm}$
+    \item Viscosidade: $\mu=1.01 \cdot 10^{-3} \un{ kg m$^{-1}$ s$^{-1}$}$
+    \item Gradiente de pressão: $\diff{p}{z}=-12.928 \un{N/m}$
+    \item Massa específica: $\rho=998 \un{kg m$^{-3}$}$
+\end{itemize}
+
+Com esses parâmetros, a Figura \ref*{fig:graficoAnaliticoQ2} mostra o perfil
+de velocidade dentro da tubulação conforme a solução analítica em
+\eqref{eq:Q2Analitic}.
+
+\begin{figure}[h!]
+    \caption{Solução analítica da questão 2.}
+    \label{fig:graficoAnaliticoQ2}
+    \centering
+    \centerline{\includegraphics[scale=0.5]{graficoAnaliticoQ2.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+O perfil de velocidade da Figura \ref*{fig:graficoAnaliticoQ2} é condizente com o 
+esperado fisicamente: a velocidade é máxima no centro do tubo, e zero nas paredes na tubulação,
+atendendo também às condições de contorno de \eqref{eq:modeloQ2Contorno}.
+Além disso, igual visto durante as aulas da disciplina, temos um perfil parabólico para o 
+escoamento plenamente desenvolvido na tubulação.
+
+\subsection{Análise Numérica}
+
+Concluída a análise analítica, podemos realizar uma análise numérica do problema. De modo semelhante
+ao feito na Questão 1, o primeiro passo é discretizar a equação diferencial \eqref{eq:modeloQ2} via 
+diferenças finitas.
+

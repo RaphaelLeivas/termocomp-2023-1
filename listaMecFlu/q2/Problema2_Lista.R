@@ -59,7 +59,7 @@ for (ri in r_seq) {
 }
 
 u_numerical <- solve(A) %*% b
-lines(r_seq, u_numerical, lwd = 2, col = "blue")
+# lines(r_seq, u_numerical, lwd = 2, col = "blue")
 
 
 
