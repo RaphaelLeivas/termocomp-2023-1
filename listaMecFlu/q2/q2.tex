@@ -101,3 +101,31 @@ Concluída a análise analítica, podemos realizar uma análise numérica do pro
 ao feito na Questão 1, o primeiro passo é discretizar a equação diferencial \eqref{eq:modeloQ2} via 
 diferenças finitas.
 
+\[ \frac{d}{dr} \left(r\diff{u}{r}\right) = r \diff{p}{z} \frac{1}{\mu} \]
+
+\noindent aplicando a regra do produto no primeiro membro da equação,
+
+\[ \diff{u}{r} + r \diff[2]{u}{r} = r \diff{p}{z} \frac{1}{\mu} \]
+
+\noindent agora substituimos os diferenciais por diferenças finitas:
+
+\[ \frac{u_{i+1} - u_i}{\Delta r} + r \left(\frac{u_{i+1} - 2u_i + u_{i-1}}{\left(\Delta r\right)^2}\right) = r \diff{p}{z} \frac{1}{\mu} \]
+
+\[ u_{i+1} - u_i + r \left(\frac{u_{i+1} - 2u_i + u_{i-1}}{\Delta r}\right) = (\Delta r) r \diff{p}{z} \frac{1}{\mu} \]
+
+\noindent agrupando as velocidades,
+
+\begin{equation}\label{eq:Q2implicit}
+    \begin{split}
+        u_{i+1} \left(1 + \frac{r}{\Delta r}\right) + u_i \left(-1 - 2\frac{r}{\Delta r}\right) \\ + u_{i-1} \left(\frac{1}{\Delta r}\right) = (\Delta r) r \diff{p}{z} \frac{1}{\mu}
+    \end{split}
+\end{equation}
+
+Note que \eqref{eq:Q2implicit} é a forma implícita de diferenças finitas para os nós
+internos do domínio. Os termos ligados às velocidades são os coeficientes do sistema linear,
+e o segundo membro de \eqref{eq:Q2implicit} são os coeficientes independentes do sistema linear.
+
+Antes de tentar montar o sistema linear em software, precisamos identificar as equações dos nós do 
+contorno geometria. 
+
+
