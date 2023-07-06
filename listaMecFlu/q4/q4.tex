@@ -14,7 +14,6 @@ Podemos fazer as seguintes simplificações:
     \item Estamos modelando a geometria apenas em duas dimensões $x$ e $y$: $w = 0$ e derivadas em relação a $z$ nulas.
     \item Gravidade atua apenas na componente $y$: $g_x = g_z = 0$
     \item Regime permanente: derivadas em relação a $t$ nulas
-    $\diffp{u}{z} = \diffp[2]{u}{z} = 0$ 
 \end{itemize}
 
 Com essas simplificações, temos três equações que modelam o problema
@@ -50,7 +49,7 @@ as condições de contorno. Na face oeste, temos
 \begin{equation}\label{eq:q4WestBoundary}
     \begin{cases}
         u(0, y) = 0.06 \un{m/s}, & 0 \leq y \leq 1 \un{cm} \\
-        v(0, y) = 0.06 \un{m/s}, & 0 \leq y \leq 1 \un{cm} \\
+        v(0, y) = 0 \un{m/s}, & 0 \leq y \leq 1 \un{cm} \\
     \end{cases}
 \end{equation}
 
@@ -60,12 +59,12 @@ desenvolvido, ou seja, derivadas espaciais nulas.
 \begin{equation}\label{eq:q4EastBoundary}
     \begin{cases}
         \diffp{u}{x} = \diffp{u}{y} = 0, & x = 20 \un{cm}, 0 \leq y \leq 1 \un{cm}  \\
-        \diffp{v}{x} = \diffp{v}{y} = 0, & x = 20 \un{cm}, 0 \leq y \leq 1 \un{cm}  \un{cm}\\
+        \diffp{v}{x} = \diffp{v}{y} = 0, & x = 20 \un{cm}, 0 \leq y \leq 1 \un{cm} \\
     \end{cases}
 \end{equation}
 
 Na face sul temos uma região da parede que é fixa, e outra que é porosa com injeção
-de ar. Assim, temos
+de ar de baixo para cima. Assim, temos
 
 \begin{equation}\label{eq:q4SouthBoundary}
     \begin{cases}
@@ -75,7 +74,9 @@ de ar. Assim, temos
     \end{cases}
 \end{equation}
 
-Na face norte temos condições de contorno simétricas à face sul
+Na face norte temos condições de contorno simétricas à face sul. Note que na face
+sul é injeção de ar, e na face norte é sucção de ar, de modo que a direção e sentido
+de $v$ em ambas faces é a mesma.
 
 \begin{equation}\label{eq:q4NorthBoundary}
     \begin{cases}
@@ -99,15 +100,90 @@ usamos o software gratuito CFD Studio para obter a distribuição de velocidades
 As configurações usadas no software foram as seguintes:
 
 \begin{itemize}
-    \item Tipo de malha utilizado: malha cartesiana, como 10 divisões na vertical e 20 na horizontal
-    \item Esquema de interpolação:
-    \item Algoritmo de acoplamento pressão velocidade (P-V): 
-    \item Coeficiente de sub-relaxação da pressão:
-    \item Pressão de referência
-    \item Local de imposição de pressão de referência
-    \item Número de iterações necessárias até convergir
-    \item Solver utilizado
+    \item Tipo de malha utilizado: malha cartesiana, com 10 divisões na vertical e 20 na horizontal
+    \item Esquema de interpolação: UDS
+    \item Algoritmo de acoplamento pressão velocidade (P-V): simplec
+    \item Coeficiente de sub-relaxação da pressão: 1.00
+    \item Pressão de referência: $0 \un{N/m}$
+    \item Local de imposição de pressão de referência: Malha $i = 19$, $j = 0$, no canto inferior da face leste
+    \item Número de iterações necessárias até convergir: 5000
+    \item Solver utilizado: Gauss Seidel
 \end{itemize}
+
+As condições iniciais são $u = v = 0$ em todo o domínio pois o regime de escoamento é permanente.
+O material selecionado foi ar, com propriedades de viscosidade $\mu=1.85 \cdot 10^{-5} \un{ kg m$^{-1}$ s$^{-1}$}$ e
+massa específica $\rho=1.161 \un{kg m$^{-3}$}$.
+
+As condições de contorno \eqref{eq:q4WestBoundary}, \eqref{eq:q4EastBoundary}, 
+\eqref{eq:q4SouthBoundary} e \eqref{eq:q4NorthBoundary} podem facilmente ser inseridas 
+no software através da interface gráfica. 
+
+Uma vez inseridos todas essas condições de contorno e configurações, a Figura \ref*{fig:convergencia}
+exibe a convergência da simulação realizada.
+
+\begin{figure}[h!]
+    \caption{Convergência da simulação no CFD Studio.}
+    \label{fig:convergencia}
+    \centering
+    \centerline{\includegraphics[scale=0.45]{convergencia.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+Como visto na Figura \ref*{fig:convergencia}, a configuração selecionada atingiu uma boa  
+convergência de velocidade, pressão e massa. A Figura \ref*{fig:velocidades} exibe a 
+distibuição do campo de velocidades simulado. Os vetores da imagem foram escalados por um fator
+3 para melhorar a visualização.
+
+\begin{figure}[h!]
+    \caption{Distribuição de velocidades no problema, obtida com o CFD Studio.}
+    \label{fig:velocidades}
+    \centering
+    \centerline{\includegraphics[scale=0.45]{velocidades.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+A distribuição na Figura \ref*{fig:velocidades} é condizente com o esperado fisicamente. Quando 
+o fluido de alta velocidade entra no espaço entra as placas, o escoamento apresenta um perfil
+parabólico, e conforme o fluido avança no espaço entre as placas na direção $x$ a 
+velocidade vai se reduzindo. Ao atingir o centro do tubo ($x = 10 \un{cm}$), a injeção
+vertical de ar através da face sul porosa deforma o perfil até então parabólico do escoamento.
+De fato, para $x \geq 10 \un{cm}$, temos uma distribuição de velocidades como uma parábola deslocada
+para cima, resultado da força para cima exercida pelo ar injetado.
+
+A Figura \ref*{fig:pressao} exibe a distribuição de pressão ao longo do tubo. Note que fixamos a pressão de referência 
+em zero no canto inferior direito da geometria na configuração da pressão de referência.
+Além disso, temos que a pressão é maxima no ponto de entrada do fluido de alta velocidade,
+o que também é conforme o esperado fisicamente.
+
+\begin{figure}[h!]
+    \caption{Distribuição de pressão no problema, obtida com o CFD Studio.}
+    \label{fig:pressao}
+    \centering
+    \centerline{\includegraphics[scale=0.45]{pressao.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+A Figura \ref*{fig:velocidadesLinha} mostra o perfil de velocidades ao longo de duas retas
+verticais no tubo, a primeira na linha $i = 4$ (quinta divisão horizontal), antes da injeção 
+de ar, e a segunda na linha em $i = 15$ (décima sexta divisão horizontal), que é depois
+da injeção de ar.
+
+\begin{figure}[h!]
+    \caption{Perfil de velocidades ao longo linhas verticais $i = 4$ e $i = 15$ no tubo.}
+    \label{fig:velocidadesLinha}
+    \centering
+    \centerline{\includegraphics[scale=0.5]{velocidadeLinha4.png}}
+    \centerline{\includegraphics[scale=0.5]{velocidadeLinha15.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+Os gráficos da Figura \ref*{fig:velocidadesLinha} reforçam a análise feita com o campo vetorial da velocidade 
+na Figura \ref*{fig:velocidades}. Após a injeção de ar, o perfil parabólico do escoamento é deformado
+para cima.
+
+A última análise que podemos fazer com o CFD Studio é o teste de malhas. Os resultados acima 
+foram obtidos com uma malha $20 \times 10$, totalizando 200 nós. Vamos refazer a simulação com
+uma malha $100 \times 50$, com 5000 nós, para verificar o impacto do refinamento da malha nos resultados.
 
 
 
