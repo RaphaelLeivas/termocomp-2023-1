@@ -53,7 +53,7 @@ Com base nos dados do problema, podemos fazer várias simplificações nas equa�
 Com todas essas simplificações, as equações acima se reduzem a 
 
 \begin{equation}\label{eq:q3modelo}
-    \diffp[2]{u}{y} - \diff{p}{x} = 0
+    \mu\diffp[2]{u}{y} - \diff{p}{x} = 0
 \end{equation}
 
 \noindent em que $u$ é função de apenas uma variável $y$.
@@ -62,10 +62,95 @@ Assim, temos as seguintes condições de contorno para \eqref{eq:q3modelo}:
 \begin{equation}\label{eq:q3modeloContorno}
     \begin{cases}
         u(-h) = 0, \\
-        u(h) = U,   
+        u(h) = U
     \end{cases}
 \end{equation}
 
 De modo semelhante ao feito na Questão 3, podemos tentar obter uma solução analítica
 para o modelo através de integração direta, assumindo que o gradiente de pressão 
 na direção do escoamento $\diff{p}{x}$ é constante.
+
+\[ \diffp[2]{u}{y} = \diff{p}{x} \frac{1}{\mu} \]
+
+\[ \int \diffp{u}{y} \, dy = \int y\diff{p}{x}\frac{1}{\mu} + C_1  \, dy \]
+
+\begin{equation}\label{eq:q3solucaoGeral}
+    u(y) = \frac{y^2}{2}\diff{p}{x}\frac{1}{\mu} + yC_1 + C_2 
+\end{equation}
+
+\eqref{eq:q3solucaoGeral} é a solução geral da EDP \eqref{eq:q3modelo}. Com as condições de contorno,
+temos
+
+\[
+    \begin{cases}
+        0 = \frac{(-h)^2}{2}\diff{p}{x}\frac{1}{\mu} - hC_1 + C_2 , \\
+        U = \frac{h^2}{2}\diff{p}{x}\frac{1}{\mu} + hC_1 + C_2 
+    \end{cases} 
+\]  
+
+\noindent somando as duas equações, temos  
+
+\[ U = h^2\diff{p}{x}\frac{1}{\mu} + 2C_2 \]
+
+\[ C_2 = \frac{1}{2} \left(U - h^2\diff{p}{x}\frac{1}{\mu}\right)  \]
+
+Agora substituimos esse $C_2$ calculado de volta, para achar o $C_1$:
+
+\[ 0 = \frac{h^2}{2}\diff{p}{x}\frac{1}{\mu} - hC_1 + \frac{1}{2} \left(U - h^2\diff{p}{x}\frac{1}{\mu}\right)  \]
+
+\[ 0 = \frac{h^2}{2}\diff{p}{x}\frac{1}{\mu} - hC_1 + \frac{1}{2}U - \frac{1}{2} h^2\diff{p}{x}\frac{1}{\mu} \]
+
+\[ - \frac{1}{2}U = - hC_1 \logo C_1 = \frac{U}{2h} \]
+
+Finalmente, a solução analítica de \eqref{eq:q3modelo} com as condições de contorno de 
+\eqref{eq:q3modeloContorno} é
+
+\[ u(y) = \frac{y^2}{2}\diff{p}{x}\frac{1}{\mu} + y\frac{U}{2h} + \frac{1}{2} \left(U - h^2\diff{p}{x}\frac{1}{\mu}\right)  \]
+
+\[ u(y) = \frac{y^2}{2}\diff{p}{x}\frac{1}{\mu} + y\frac{U}{2h} + \frac{1}{2}U - \frac{1}{2} h^2\diff{p}{x}\frac{1}{\mu}  \]
+
+\[ \frac{u(y)}{U} = \frac{y^2}{2U}\diff{p}{x}\frac{1}{\mu} + \frac{y}{2h} + \frac{1}{2} - \frac{1}{2U} h^2\diff{p}{x}\frac{1}{\mu}  \]
+
+\[ \frac{u(y)}{U} = \frac{1}{2} \left(1 + \frac{y}{h}\right) -  \diff{p}{x} \frac{h^2}{2\mu U} \left(1 -  \frac{y^2}{h^2} \right) \]
+
+\noindent definimos $P$ tal que
+
+\[ P = - \diff{p}{x}  \frac{h^2}{2\mu U} \]
+
+\noindent e assim podemos reescrever a expressão como
+
+\begin{equation}\label{eq:solucaoAnalitica}
+    \frac{u(y)}{U} = \frac{1}{2} \left(1 + \frac{y}{h}\right) + P\left(1 - \frac{y^2}{h^2}\right) 
+\end{equation}
+
+Usamos os seguintes parâmetros:
+
+\begin{itemize}
+    \item Domínio de análise vertical: $-h \leq y \leq h$, com $h = 5 \un{mm}$
+    \item Viscosidade: $\mu=1.49 \un{ kg m$^{-1}$ s$^{-1}$}$
+    \item Velocidade de deslocamento da placa superior: $U=1 \un{m/s}$
+    \item Gradiente de pressão: $\diff{p}{x} = -178800 \un{Pa}$
+\end{itemize}
+
+Com \eqref{eq:solucaoAnalitica} e os parâmetros, podemos obter a distribuição de velocidades
+do fluido analiticamete. A Figura \eqref{fig:graficoAnaliticoQ3} exibe a solução obtida.
+
+\begin{figure}[h!]
+    \caption{Solução analítica da questão 3.}
+    \label{fig:graficoAnaliticoQ3}
+    \centering
+    \centerline{\includegraphics[scale=0.7]{graficoAnaliticoQ3.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+Na Figura \eqref{fig:graficoAnaliticoQ3} temos um perfil parabólico para um escoamento plenamente
+desenvolvido, conforme visto nas aulas da disciplina. Note que a velocidade máxima está quase no centro,
+deslocada devido ao movimento da placa superior.
+
+\subsection{Análise Numérica}
+
+Vamos discretizar \eqref{eq:q3modelo} com o método das difenças finitas. Note que
+usamos o diferencial de pressão como constante, logo ele não precisa ser discretizado.
+
+
+

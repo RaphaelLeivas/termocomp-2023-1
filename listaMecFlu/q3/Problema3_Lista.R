@@ -15,8 +15,8 @@ u_analytical <- (U/2) * (1 + y_seq_an/h) + ((-dpdx * h^2) / (2 * mu * U)) * (1 -
 
 plot(
   NULL,
-  main = "Velocidade (m/s) x Posição vertical (mm)",
-  xlab = "Posição vertical (mm)",
+  main = "Velocidade (m/s) x Posição vertical (m)",
+  xlab = "Posição vertical (m)",
   ylab = "Velocidade (m/s)",
   xlim = c(-h, h),
   ylim = c(0, max(u_analytical))
@@ -57,5 +57,5 @@ for (yi in y_seq) {
 }
 
 u_numerical <- solve(A) %*% b
-lines(y_seq, u_numerical, lwd = 2, col = "blue", lty = 1)
+# lines(y_seq, u_numerical, lwd = 2, col = "blue", lty = 1)
 
