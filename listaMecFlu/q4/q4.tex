@@ -1,0 +1,113 @@
+
+\section{Quarta Questão (9 pts)}
+
+\subsection{Análise Analítica}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+De modo parecido à modelagem do Prolema 3, temos que partir das equações de Navier-Stokes e 
+da equação de conservação da massa, assumindo escoamento incompressível. 
+Podemos fazer as seguintes simplificações:
+
+\begin{itemize}
+    \item Estamos modelando a geometria apenas em duas dimensões $x$ e $y$: $w = 0$ e derivadas em relação a $z$ nulas.
+    \item Gravidade atua apenas na componente $y$: $g_x = g_z = 0$
+    \item Regime permanente: derivadas em relação a $t$ nulas
+    $\diffp{u}{z} = \diffp[2]{u}{z} = 0$ 
+\end{itemize}
+
+Com essas simplificações, temos três equações que modelam o problema
+
+\begin{equation}\label{eq:Q4NS1}
+        \rho\left(u\diffp{u}{x} + v\diffp{u}{y}\right)
+         = \diffp{p}{x} + \mu \left(\diffp[2]{u}{x} + \diffp[2]{u}{y}\right)
+\end{equation}
+
+\begin{equation}\label{eq:Q4NS2}
+        \rho\left(u\diffp{v}{x} + v\diffp{v}{y}\right)
+         = \rho g_y - \diffp{p}{y} + \mu \left(\diffp[2]{v}{x} + \diffp[2]{v}{y}\right)
+\end{equation}
+
+\begin{equation}\label{eq:MassConservationQ4}
+    \diffp{u}{x} + \diffp{v}{y} = 0
+\end{equation}
+
+Conforme as equações \eqref{eq:Q4NS1}, \eqref{eq:Q4NS2} e \eqref{eq:MassConservationQ4},
+temos que as velocidades horizontal $u$ e vertical $v$ são funções de duas variáveis: $x$ e $y$.
+A injeção de ar pela face sul é de baixo para cima, logo temos efeito da gravidade no fluido,
+representada pelo termo $\rho g_y$ em \eqref{eq:Q4NS2}. 
+
+Os gradientes de pressão na direçao $x$ e $y$
+não foram informados no enunciado do problema, mas podemos assumir que existem gradientes 
+causando os movimentos do fluido em ambas direçoes $x$ e $y$. Nessa interpretação, usamos a analogia
+que gradientes de pressão causam movimento de fluidos da mesma forma que gradientes de potencial
+elétrico (tensão) geram fluxo de corrente elétrica. 
+
+Uma vez identificado as equações diferenciais que modelam o problema, temos que determinar
+as condições de contorno. Na face oeste, temos
+
+\begin{equation}\label{eq:q4WestBoundary}
+    \begin{cases}
+        u(0, y) = 0.06 \un{m/s}, & 0 \leq y \leq 1 \un{cm} \\
+        v(0, y) = 0.06 \un{m/s}, & 0 \leq y \leq 1 \un{cm} \\
+    \end{cases}
+\end{equation}
+
+Na face leste temos sáida, que significa escoamento plenamente
+desenvolvido, ou seja, derivadas espaciais nulas.
+
+\begin{equation}\label{eq:q4EastBoundary}
+    \begin{cases}
+        \diffp{u}{x} = \diffp{u}{y} = 0, & x = 20 \un{cm}, 0 \leq y \leq 1 \un{cm}  \\
+        \diffp{v}{x} = \diffp{v}{y} = 0, & x = 20 \un{cm}, 0 \leq y \leq 1 \un{cm}  \un{cm}\\
+    \end{cases}
+\end{equation}
+
+Na face sul temos uma região da parede que é fixa, e outra que é porosa com injeção
+de ar. Assim, temos
+
+\begin{equation}\label{eq:q4SouthBoundary}
+    \begin{cases}
+        u(x, 0) = 0, & 0 \leq x \leq 20 \un{cm}  \\
+        v(x, 0) = 0, & 0 \leq x \leq 10 \un{cm}  \\
+        v(x, 0) = 0.02 \un{m/s}, & 10 \leq x \leq 20 \un{cm}  \\
+    \end{cases}
+\end{equation}
+
+Na face norte temos condições de contorno simétricas à face sul
+
+\begin{equation}\label{eq:q4NorthBoundary}
+    \begin{cases}
+        u(x, 1 \un{cm}) = 0, & 0 \leq x \leq 20 \un{cm}  \\
+        v(x, 1 \un{cm}) = 0, & 0 \leq x \leq 10 \un{cm}  \\
+        v(x, 1 \un{cm}) = 0.02 \un{m/s}, & 10 \leq x \leq 20 \un{cm}  \\
+    \end{cases}
+\end{equation}
+
+Finalmente, o problema é modelado matematicamente pelas equações diferenciais parciais
+\eqref{eq:Q4NS1}, \eqref{eq:Q4NS2} e \eqref{eq:MassConservationQ4}, com as condições de 
+contorno especificadas em \eqref{eq:q4WestBoundary}, \eqref{eq:q4EastBoundary}, 
+\eqref{eq:q4SouthBoundary} e \eqref{eq:q4NorthBoundary}.
+
+\subsection{Análise Numérica}
+
+Ao contrário dos Problemas 1, 2 e 3, discretizar as equações diferenciais \eqref{eq:Q4NS1}, \eqref{eq:Q4NS2} e \eqref{eq:MassConservationQ4}
+e desenvolver um programa para analisar numericamente seria bastante trabalhoso. Assim, 
+usamos o software gratuito CFD Studio para obter a distribuição de velocidades. 
+
+As configurações usadas no software foram as seguintes:
+
+\begin{itemize}
+    \item Tipo de malha utilizado: malha cartesiana, como 10 divisões na vertical e 20 na horizontal
+    \item Esquema de interpolação:
+    \item Algoritmo de acoplamento pressão velocidade (P-V): 
+    \item Coeficiente de sub-relaxação da pressão:
+    \item Pressão de referência
+    \item Local de imposição de pressão de referência
+    \item Número de iterações necessárias até convergir
+    \item Solver utilizado
+\end{itemize}
+
+
+

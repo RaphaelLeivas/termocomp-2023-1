@@ -35,9 +35,9 @@ A equação diferencial que modela o problema é
 
 \begin{equation}\label{eq:modeloQ1Contorno}
     \begin{cases}
-        u(0, t) = U_0, & \textrm{Condição de contorno 1} \\
-        u(H, t) = 0,   & \textrm{Condição de contorno 2} \\
-        u(y, 0) =  0,  & \textrm{Condição inicial}       \\
+        u(0, t) = U_0, & 0 \leq t \leq T \quad \textrm{Cond. contorno 1}\\
+        u(H, t) = 0,   & 0 \leq t \leq T \quad \textrm{Cond. contorno 2}\\
+        u(y, 0) =  0,  & 0 \leq y \leq H \quad \textrm{Cond. inicial}     \\
     \end{cases}
 \end{equation}
 
@@ -49,7 +49,7 @@ No nosso sistema de coordenadas, $y = 0$ corresponde ao ponto do fluido
 em contato com a placa, e $y = H$ é a altura máxima que iremos considerar na análise.
 Note que, para $H$ suficiente grande, faz sentido assumir que o movimento da placa
 não atinge esses pontos do fluido a uma grande distância da placa, de modo que
-$u(H, t) = 0$.
+$u(H, t) = 0$. O tempo total de análise é dado por $T$.
 
 O problema dado por \eqref{eq:modeloQ1} e \eqref{eq:modeloQ1Contorno} possui solução analítica dada por
 
