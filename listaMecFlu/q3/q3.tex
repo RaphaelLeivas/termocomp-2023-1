@@ -151,6 +151,51 @@ deslocada devido ao movimento da placa superior.
 
 Vamos discretizar \eqref{eq:q3modelo} com o método das difenças finitas. Note que
 usamos o diferencial de pressão como constante, logo ele não precisa ser discretizado.
+Além disso, como o regime é permanente, usamos o método implícito.
 
+\[ \frac{u_{i+1} - 2u_i + u_{i-1}}{\left(\Delta y\right)^2} = \diff{p}{x} \]
 
+\begin{equation}\label{eq:q3Discretizada}
+    u_{i+1} - 2u_i + u_{i-1} = \left(\Delta y\right)^2\diff{p}{x}
+\end{equation}
 
+A equação \eqref{eq:q3Discretizada} é a equação para todos os nós internos no domínio. Nos contornos,
+de modo bem parecido como feito no Problema 2, temos, para $i = -h$,
+
+\begin{equation}\label{eq:q3DiscContorno0}
+    u_i = 0
+\end{equation}
+
+\noindent que corresponde ao ponto de contato do fluido com a placa inferior, em repouso.
+Similarmente, quando $i = h$, temos 
+
+\begin{equation}\label{eq:q3DiscContornoU}
+    u_i = U
+\end{equation}
+
+\noindent que corresponde ao ponto de contato do fluido com a placa superior, com velocidade
+igual a $U$.
+
+O algoritmo usado na solução é precisamente o mesmo da questão 2, apenas trocando as equações e os parâmetros físicos.
+Continuamos percorrendo cada $\Delta y$, identificando se ele é um nó interno, borda inferior ou
+de borda superior, e salvando os coeficientes nas matrizes. No final, resolvemos o sistema linear 
+e obtemos o vetor solução.
+
+O código completo feito em R nessa questão está disponível no ANEXO C. Repare que sua estrutura
+é a mesma que o código no ANEXO B. A Figura \ref*{fig:graficoNumericoQ3} exibe uma comparação entre
+as curvas obtidas analiticamente e numericamente para vários valores de $N$, onde $N = 2h / \Delta y$.
+
+\begin{figure*}[h!]
+    \caption{Solução numérica (azul) e solução analítica (vermelha) para vários valores de $N$.}
+    \label{fig:graficoNumericoQ3}
+    \centering
+    \centerline{\includegraphics[scale=0.5]{graficoNumericoQ3.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure*}
+
+De modo bastante semelhante ao visto no Problema 2, na Figura \ref*{fig:graficoNumericoQ3} (a) vemos que
+o baixo de valor $N$ resulta em um modelo de baixa exatidão, com o baixo número de pontos discretizados tornando
+as aproximações lineares insuficientes para modelar a solução analítica, que é quadrática.
+
+Conforme o valor de $N$ aumenta, temos que as aproximações ficam cada vez melhores, e a partir $N \geq 10$ o modelo
+numérico já está bastante parecido com a solução analítica, como mostram as Figuras \ref*{fig:graficoNumericoQ3} (c) e (d).
