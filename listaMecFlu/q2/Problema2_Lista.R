@@ -5,24 +5,25 @@ library(flextable)
 dpdz <- -12.928
 mu <- 1.01 * 10^-3
 R <- 25 * 10^-3
-N <- 50 # numero de pontos analisados 
+N <- 1000 # numero de pontos analisados 
 dr <- R/N # passo no espaço
 
 N <- N + 1
 
 r_seq <- seq(from = 0.0, to = R, by = dr)
-u_analytical <- dpdz / (4 * mu) * (r_seq^2 - R^2)
+r_seq_analytical <- seq(from = 0.0, to = R, by = 10^-6)
+u_analytical <- dpdz / (4 * mu) * (r_seq_analytical^2 - R^2)
 
 plot(
   NULL,
   main = "Velocidade (m/s) x Posição radial (mm)",
   xlab = "Posição radial (mm)",
   ylab = "Velocidade (m/s)",
-  xlim = c(0, max(r_seq)),
+  xlim = c(0, max(r_seq_analytical)),
   ylim = c(0, max(u_analytical))
 )
 
-lines(r_seq, u_analytical, lwd = 2, col = "red")
+lines(r_seq_analytical, u_analytical, lwd = 2, col = "red")
 
 # agora é a analise numerica
 
@@ -59,7 +60,7 @@ for (ri in r_seq) {
 }
 
 u_numerical <- solve(A) %*% b
-# lines(r_seq, u_numerical, lwd = 2, col = "blue")
+lines(r_seq, u_numerical, lwd = 2, col = "blue")
 
 
 
