@@ -41,8 +41,8 @@ A equação diferencial que modela o problema é
     \end{cases}
 \end{equation}
 
-Veja que o problema é modelado por uma equação diferencial de segunda ordem 
-em regime transiente, logo precisamos de duas condições de contorno e uma condição 
+Veja que o problema é modelado por uma equação diferencial de segunda ordem
+em regime transiente, logo precisamos de duas condições de contorno e uma condição
 inicial.
 
 No nosso sistema de coordenadas, $y = 0$ corresponde ao ponto do fluido
@@ -120,14 +120,105 @@ Em \eqref{eq:modeloQ1Discretizado} adotamos a seguinte simbologia:
 \end{itemize}
 
 Assim, a linha média da Figura \ref*{fig:geometriaQ1} é discretizada em $H / \Delta y$ elementos de
-comprimento $ \Delta y$, e o tempo é transcorrido a partir de $t = 0$ até $t = T$ em intervalos de  
-$ \Delta t$. Vamos reescrever \eqref{eq:modeloQ1Discretizado} de modo a expressar a 
-velocidade futura em função da velocidade antiga. 
+comprimento $ \Delta y$, e o tempo é transcorrido a partir de $t = 0$ até $t = T$ em intervalos de
+$ \Delta t$. Vamos reescrever \eqref{eq:modeloQ1Discretizado} de modo a expressar a
+velocidade futura em função da velocidade antiga.
 
+\begin{equation}\label{eq:Q1explicito}
+    u^{p+1} = u^p + \frac{\mu}{\rho} \frac{\Delta t}{\left(\Delta y\right)^2} \left(u_{i+1} - 2u_i + u_{i-1}\right)
+\end{equation}
 
+Em \eqref{eq:Q1explicito}, usamos o método explícito ao aplicar as difenças finitas. Portanto,
+é fundamental analisar os critérios de estabilidade para que a solução converja. Em transferência
+de calor, vimos que a equação diferencial de condução unidimensional em regime transiente é
 
+\begin{equation}\label{eq:transCalTransiente}
+    \frac{1}{\alpha} \diffp{T}{t} = \diffp[2]{T}{y} \logo \diffp{T}{t} = \alpha \diffp[2]{T}{y}
+\end{equation}
 
+\noindent onde $\alpha$ é a difusivade térmica do material. Nesse modelo, o critério de estabilidade
+é, segundo Incropera (2007),
 
+\begin{equation}\label{eq:transCalestabilidade}
+    \frac{\alpha \Delta t}{\left(\Delta y\right)^2} \leq \frac{1}{2}
+\end{equation}
 
+Comparando as equações diferenciais \eqref{eq:modeloQ1} e \eqref{eq:transCalTransiente},
+podemos ver que as constantes $\alpha$ e $\mu / \rho$ possuem o mesmo papel, apesar de uma
+ter um significado físico de transferência de calor e outra um significado de mecânica dos fluidos.
+Nesse sentido, podemos inferir que o critério de estabilidade de \eqref{eq:Q1explicito} é
 
+\begin{equation}\label{eq:Q1estabilidade}
+    \frac{\mu}{\rho} \frac{\Delta t}{\left(\Delta y\right)^2} \leq \frac{1}{2}
+\end{equation}
+
+Concluído essa análise, podemos jogar \eqref{eq:Q1explicito} no computador para obter a solução
+numérica do problema. Novamente usando R e a IDE RStudio, o pseudocódigo abaixo mostra
+o procedimento para resolver o problema numericamente.
+
+\begin{algorithmic}
+    \State listaSoluções $\gets$ Lista()
+    \State $i \gets 0$
+    \For{\texttt{$\Delta t$ em $T$}}
+        \State $i \gets i + 1$
+        \State soluçãoAntiga $\gets$ listaSoluções[$i$]
+
+        \For{\texttt{$\Delta y$ em $H$}}
+            \State calcule novaVelocidade
+        \EndFor
+
+        \State listaSoluções[$i + 1$] $\gets$ novaVelocidade
+    \EndFor
+
+    \Return listaSoluções
+\end{algorithmic}
+
+O pseudocódigo acima está bastante simplificado, mas ele mostra a ideia principal: percorremos 
+dois loops, um para o tempo e um para a posição vertical. Percorremos todos os intervalos verticais,
+calculando as velocidade, para cada intervalo de tempo. Ao final de cada loop do tempo, salva o novo
+vetor de velocidades calculado na lista de soluções. No final da execução, a lista de soluções 
+tem $T / \Delta t$ elementos, e cada elemento é um vetor de tamanho $H / \Delta y$.
+
+O código completo desenvolvido em R, que implementa o pseudocódigo acima,
+pode ser visto no ANEXO A. A Figura \ref*{fig:tabelaNumericaQ1} mostra a distribuição de 
+velocidades obtida com o código do ANEXO A para $\Delta t = 0.05 \un{s}$ e $\Delta y = 1 \un{cm}$.
+
+\begin{figure}[h!]
+    \caption{Distribuição de velocidades obtida com a solução numérica.}
+    \label{fig:tabelaNumericaQ1}
+    \centering
+    \centerline{\includegraphics[scale=0.75]{tabelaNumericaQ1.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+Note que os valores escolhidos de $\Delta t$ e $\Delta y$ atendem ao critério de estabilidade:
+
+\[ \frac{\mu}{\rho} \frac{\Delta t}{\left(\Delta y\right)^2} = 0.1627 \leq 0.5 \]
+
+Os dados obtidos na Figura \ref*{fig:tabelaNumericaQ1} são condizentes tanto com o esperado da geometria
+quanto do resultado analítico da Figura \eqref{fig:velocidadesAnaliticaQ1}. Com o passar no tempo,
+as velocidades mais distantes da placa aumentam, e pontos muito distantes não sofrem efeito 
+algum.
+
+Em particular, na Figura \ref*{fig:tabelaNumericaQ1}, obtemos 
+
+\[ u(3 \un{cm}, 0.5 \un{s}) = 0.10 \un{m/s} \]
+\[ u(3 \un{cm}, 1 \un{s}) = 0.25 \un{m/s} \]
+
+\noindent através da solução numérica. O erro percentual com a solução analítica é dado por 
+
+\begin{equation}\label{eq:erroPercentual}
+    E_{\%} = \frac{V_{\un{numerico}} - V_{\un{analitico}}}{V_{\un{analitico}}} 100\%
+\end{equation}
+
+Assim, para $y = 3 \un{cm}$ em $t = 0.5 \un{s}$ temos erro  
+
+\[ E_{\%} = \frac{0.10 - 0.096}{0.096} 100\% = 4.2\% \]
+
+\noindent e para $y = 3 \un{cm}$ em $t = 1 \un{s}$,
+
+\[ E_{\%} = \frac{0.25- 0.24}{0.24} 100\% = 4.2\% \]
+
+\noindent com ambos erros inferiores a $5\%$ em relação ao resultado analítico. Assim, podemos
+concluir que o modelo numérico é satisfatório.
 

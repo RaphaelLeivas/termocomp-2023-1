@@ -6,8 +6,7 @@ library(flextable)
 U0 <- 1
 mu <- 0.29
 rho <- 891
-H <- 0.1
-# y <- seq(from = 0, to = H, by = 1) * 10^-2
+# y <- seq(from = 0, to = 10, by = 1) * 10^-2
 # t <-seq(from = 0.25, to = 1, by = 0.25)
 u_initial <- 0 # repouso
 
@@ -26,13 +25,13 @@ u_initial <- 0 # repouso
 # os parametros abaixo estão excelentes para a questao 1.
 # alpha ficou baixo e bateu demais com a solução analítica
 
-y_size <- H * 10^-2 # tamanho vertical do dominio, em metros
+y_size <- 10 * 10^-2 # tamanho vertical do dominio, em metros
 T <- 1 # periodo total de analise, em segundos
 N <- 10 # numero de malhas (intervalos) da direção y, unidimensional
 M <- 20 # numeros de pontos no tempo
 dy <- y_size / N # metros por divisao
 dt <- T / M # segundos por divisao
-alpha = (mu / rho) * dt / (dy^2)
+alpha = (mu / rho) * dt / (dy^2) # deve ser que menor que 0.5
 
 N <- N + 1 # ajuste para incluir a posicao zero
 
