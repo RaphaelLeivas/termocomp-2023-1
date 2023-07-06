@@ -1,0 +1,71 @@
+
+\section{Terceira Questão (9 pts)}
+
+\subsection{Análise Analítica}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+Para modelar o problema dado, temos que partir das equações de Navier-Stokes e 
+da equação de conservação da massa. Assumindo escoamento incompressível (massa específica constante),
+temos
+
+\begin{equation}\label{eq:Q3NS1}
+    \begin{split}
+        \rho\left(\diffp{u}{t} + u\diffp{u}{x} + v\diffp{u}{y}+ w\diffp{u}{z}\right) \\
+         = \rho g_x - \diffp{p}{x} + \mu \left(\diffp[2]{u}{x} + \diffp[2]{u}{y} + \diffp[2]{u}{z}\right)
+    \end{split}
+\end{equation}
+
+\begin{equation}\label{eq:Q3NS2}
+    \begin{split}
+        \rho\left(\diffp{v}{t} + u\diffp{v}{x} + v\diffp{v}{y}+ w\diffp{v}{z}\right) \\
+         = \rho g_y - \diffp{p}{y} + \mu \left(\diffp[2]{v}{x} + \diffp[2]{v}{y} + \diffp[2]{v}{z}\right)
+    \end{split}
+\end{equation}
+
+\begin{equation}\label{eq:Q3NS3}
+    \begin{split}
+        \rho\left(\diffp{w}{t} + u\diffp{w}{x} + v\diffp{w}{y}+ w\diffp{w}{z}\right) \\
+         = \rho g_z - \diffp{p}{z} + \mu \left(\diffp[2]{w}{x} + \diffp[2]{w}{y} + \diffp[2]{w}{z}\right)
+    \end{split}
+\end{equation}
+
+\begin{equation}\label{eq:MassConservation}
+    \nabla \cdot V = 0 \logo \diffp{u}{x} + \diffp{v}{y} + \diffp{w}{z} = 0
+\end{equation}
+
+As equações \eqref{eq:Q3NS1}, \eqref{eq:Q3NS2} e \eqref{eq:Q3NS3} são as três 
+equações de Navier-Stokes, e a equação \eqref{eq:MassConservation} é a equação de conservação
+da massa.
+
+Com base nos dados do problema, podemos fazer várias simplificações nas equações acima:
+
+\begin{itemize}
+    \item Escoamento unidimensional apenas na direção $x$: $v = w = 0$
+    \item Escoamento em regime permanente: $\diffp{u}{t} = 0$
+    \item Gravidade atua apenas na componente $y$: $g_x = g_z = 0$
+    \item Escoamento plenamente desenvolvido: $\diffp{u}{x} = \diffp[2]{u}{x} = 0$
+    \item Na geometria analisada, o sistema de coordenadas possui apenas eixos $x$ e $y$: 
+    $\diffp{u}{z} = \diffp[2]{u}{z} = 0$ 
+\end{itemize}
+
+Com todas essas simplificações, as equações acima se reduzem a 
+
+\begin{equation}\label{eq:q3modelo}
+    \diffp[2]{u}{y} - \diff{p}{x} = 0
+\end{equation}
+
+\noindent em que $u$ é função de apenas uma variável $y$.
+Assim, temos as seguintes condições de contorno para \eqref{eq:q3modelo}:
+
+\begin{equation}\label{eq:q3modeloContorno}
+    \begin{cases}
+        u(-h) = 0, \\
+        u(h) = U,   
+    \end{cases}
+\end{equation}
+
+De modo semelhante ao feito na Questão 3, podemos tentar obter uma solução analítica
+para o modelo através de integração direta, assumindo que o gradiente de pressão 
+na direção do escoamento $\diff{p}{x}$ é constante.
