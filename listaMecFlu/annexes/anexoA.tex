@@ -1,0 +1,73 @@
+\section*{Anexo A}
+
+Aqui está o código completo desenvolvido em R na questão 1. O código de formatação dos dados com o pacote
+\verb|flextable| não está exibido. 
+
+\begin{lstlisting}
+    U0 <- 1
+    mu <- 0.29
+    rho <- 891
+    
+    H <- 10 * 10^-2 # tamanho vertical do dominio, em metros
+    T <- 1 # periodo total de analise, em segundos
+    N <- 40 # numero de malhas (intervalos) da direcao y, unidimensional
+    M <- 200 # numeros de pontos no tempo
+    dy <- H / N # metros por divisao
+    dt <- T / M # segundos por divisao
+    K = (mu / rho) * dt / (dy^2) # deve ser que menor que 0.5
+    
+    N <- N + 1 # ajuste para incluir a posicao zero
+    
+    y <- c()
+    
+    # configura a malha
+    for (yi in 1:N) {
+      y[yi] <- (yi - 1) * dy
+    }
+    
+    solutionsList <- list()
+    
+    boundaryVelBottom <- 1
+    boundaryVelTop <- 0
+    initialVel <- 0 # inicialmente em repouso
+    
+    initialMesh <- c()
+    
+    # associa condicao inicial a malha
+    for (yi in 1:N) {
+      if (yi == 1) {
+        # se esta na base
+        initialMesh <- append(initialMesh, boundaryVelBottom)
+      } else if (yi == N) {
+        # se esta no topo
+        initialMesh <- append(initialMesh, boundaryVelTop)
+      } else {
+        # se nao, eh malha interna 
+        initialMesh <- append(initialMesh, initialVel)
+      }
+    }
+    
+    solutionsList[[1]] <- initialMesh
+    
+    for (t in 1:M) {
+      prevU <- solutionsList[[t]]
+      
+      newU <- c()
+      for (yi in 1:N) {
+        # se esta na base ou no topo, temos condicao de contorno
+        if (yi == 1) {
+          # se esta na base
+          newU <- append(newU, boundaryVelBottom)
+        } else if (yi == N) {
+          # se esta no topo
+          newU <- append(newU, boundaryVelTop)
+        } else {
+          # se nao, eh malha interna e usa a expressao deduzida
+          newU <- append(newU, prevU[yi] + K * (prevU[yi + 1] - 2 * prevU[yi] + prevU[yi - 1] ))
+        }
+      }
+      
+      solutionsList[[t + 1]] <- newU
+    }
+    
+\end{lstlisting}

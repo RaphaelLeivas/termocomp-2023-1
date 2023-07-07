@@ -23,6 +23,7 @@
 \usepackage[portuguese]{babel}
 \usepackage{indentfirst}
 \usepackage{algpseudocode}
+\usepackage{listings}
 
 % configs
 \setlength{\parindent}{1cm}
@@ -37,6 +38,21 @@
 \newcommand*\dif{\mathop{}\!\mathrm{d}}
 
 \begin{document}
+
+\lstset{frame=none,
+  language=R,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4,
+  extendedchars=true,
+  literate={ç}{ã}{â}{é}{ê}1,
+}
 
 \begin{titlepage}
     \begin{center}
@@ -80,5 +96,9 @@
 \import{../q3}{q3.tex}
 \import{../q4}{q4.tex}
 \import{../annexes}{referencias.tex}
+
+\clearpage
+\onecolumn
+\import{../annexes}{anexoA.tex}
 
 \end{document}

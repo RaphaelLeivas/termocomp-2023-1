@@ -15,7 +15,7 @@ $U_0$. A Figura \ref*{fig:geometriaQ1} exibe a geometria do problema.
     \caption{Geometria da questão 1.}
     \label{fig:geometriaQ1}
     \centering
-    \centerline{\includegraphics[scale=0.5]{geometriaQ1.png}}
+    \centerline{\includegraphics[scale=0.35]{geometriaQ1.png}}
     \par{Fonte: elaboração própria.}
 \end{figure}
 
@@ -37,13 +37,14 @@ A equação diferencial que modela o problema é
     \begin{cases}
         u(0, t) = U_0, & 0 \leq t \leq T \quad \textrm{Cond. contorno 1}\\
         u(H, t) = 0,   & 0 \leq t \leq T \quad \textrm{Cond. contorno 2}\\
-        u(y, 0) =  0,  & 0 \leq y \leq H \quad \textrm{Cond. inicial}     \\
+        u(y, 0) =  0,  & 0 < y \leq H \quad \textrm{Cond. inicial}     \\
     \end{cases}
 \end{equation}
 
 Veja que o problema é modelado por uma equação diferencial de segunda ordem
 em regime transiente, logo precisamos de duas condições de contorno e uma condição
-inicial.
+inicial. Estamos analisando apenas o que acontence com a linha média, logo temos 
+apenas uma dimensão de análise $y$.
 
 No nosso sistema de coordenadas, $y = 0$ corresponde ao ponto do fluido
 em contato com a placa, e $y = H$ é a altura máxima que iremos considerar na análise.
@@ -51,13 +52,13 @@ Note que, para $H$ suficiente grande, faz sentido assumir que o movimento da pla
 não atinge esses pontos do fluido a uma grande distância da placa, de modo que
 $u(H, t) = 0$. O tempo total de análise é dado por $T$.
 
-O problema dado por \eqref{eq:modeloQ1} e \eqref{eq:modeloQ1Contorno} possui solução analítica dada por
+O problema modelado por \eqref{eq:modeloQ1} e \eqref{eq:modeloQ1Contorno} possui solução analítica dada por
 
 \begin{equation}\label{eq:solAnaliticaQ1}
     u(y,t) = U_0 \left[1 - erf\left(\frac{y}{2\sqrt{\frac{\mu}{\rho}t}}\right)\right]
 \end{equation}
 
-\noindent em que $erf$ é a função erro dada por
+\noindent em que $erf$ é a função erro definida como
 
 \begin{equation}\label{eq:erf}
     erf(\beta) = \frac{2}{\sqrt{\pi}} \int_0^\beta e^{-x^2} \, dx
@@ -96,8 +97,8 @@ do movimento da placa até $t = 1 \un{s}$.
 
 Analisando os pontos específicos pedidos no exercício, temos
 
-\[ u(3 \un{cm}, 0.5 \un{s}) = 0.096 \un{m/s} \]
-\[ u(3 \un{cm}, 1 \un{s}) = 0.24 \un{m/s} \]
+\[ u(3 \un{cm}, 0.5 \un{s}) = 0.0963 \un{m/s} \]
+\[ u(3 \un{cm}, 1 \un{s}) = 0.2396 \un{m/s} \]
 
 \subsection{Análise Numérica}
 
@@ -125,7 +126,7 @@ $ \Delta t$. Vamos reescrever \eqref{eq:modeloQ1Discretizado} de modo a expressa
 velocidade futura em função da velocidade antiga.
 
 \begin{equation}\label{eq:Q1explicito}
-    u^{p+1} = u^p + \frac{\mu}{\rho} \frac{\Delta t}{\left(\Delta y\right)^2} \left(u_{i+1} - 2u_i + u_{i-1}\right)
+    u^{p+1} = u^p + \frac{\mu}{\rho} \frac{\Delta t}{\left(\Delta y\right)^2} \left(u_{i+1}^p - 2u_i^p + u_{i-1}^p\right)
 \end{equation}
 
 Em \eqref{eq:Q1explicito}, usamos o método explícito ao aplicar as difenças finitas. Portanto,
@@ -136,7 +137,7 @@ de calor, vimos que a equação diferencial de condução unidimensional em regi
     \frac{1}{\alpha} \diffp{T}{t} = \diffp[2]{T}{y} \logo \diffp{T}{t} = \alpha \diffp[2]{T}{y}
 \end{equation}
 
-\noindent onde $\alpha$ é a difusivade térmica do material. Nesse modelo, o critério de estabilidade
+\noindent onde $\alpha$ é a difusividade térmica do material. Nesse modelo, o critério de estabilidade
 é, segundo Incropera (2007),
 
 \begin{equation}\label{eq:transCalestabilidade}
@@ -160,14 +161,14 @@ o procedimento para resolver o problema numericamente.
     \State listaSoluções $\gets$ Lista()
     \State $i \gets 0$
     \For{\texttt{$\Delta t$ em $T$}}
-        \State $i \gets i + 1$
         \State soluçãoAntiga $\gets$ listaSoluções[$i$]
 
         \For{\texttt{$\Delta y$ em $H$}}
-            \State calcule novaVelocidade
+            \State calcule novasVelocidades
         \EndFor
 
-        \State listaSoluções[$i + 1$] $\gets$ novaVelocidade
+        \State $i \gets i + 1$
+        \State listaSoluções[$i$] $\gets$ novasVelocidades
     \EndFor
 
     \Return listaSoluções
@@ -175,7 +176,7 @@ o procedimento para resolver o problema numericamente.
 
 O pseudocódigo acima está bastante simplificado, mas ele mostra a ideia principal: percorremos 
 dois loops, um para o tempo e um para a posição vertical. Percorremos todos os intervalos verticais,
-calculando as velocidade, para cada intervalo de tempo. Ao final de cada loop do tempo, salva o novo
+calculando a velocidade em cada nó, para cada intervalo de tempo. Ao final de cada loop do tempo, salva o novo
 vetor de velocidades calculado na lista de soluções. No final da execução, a lista de soluções 
 tem $T / \Delta t$ elementos, e cada elemento é um vetor de tamanho $H / \Delta y$.
 
@@ -199,16 +200,18 @@ A tabela da Figura \ref*{fig:tabelaNumericaQ1} foi construída com o pacote  \ve
 que formata a lista de soluções na forma de uma tabela.  
 
 Os dados obtidos na Figura \ref*{fig:tabelaNumericaQ1} são condizentes tanto com o esperado da geometria
-quanto do resultado analítico da Figura \eqref{fig:velocidadesAnaliticaQ1}. Com o passar no tempo,
+quanto com o resultado analítico da Figura \eqref{fig:velocidadesAnaliticaQ1}. Com o passar no tempo,
 as velocidades mais distantes da placa aumentam, e pontos muito distantes não sofrem efeito 
 algum.
 
 Em particular, na Figura \ref*{fig:tabelaNumericaQ1}, obtemos 
 
-\[ u(3 \un{cm}, 0.5 \un{s}) = 0.10 \un{m/s} \]
-\[ u(3 \un{cm}, 1 \un{s}) = 0.25 \un{m/s} \]
+\[ u(3 \un{cm}, 0.5 \un{s}) = 0.1049 \un{m/s} \]
+\[ u(3 \un{cm}, 1 \un{s}) = 0.2455 \un{m/s} \]
 
-\noindent através da solução numérica. O erro percentual com a solução analítica é dado por 
+\noindent através da solução numérica. É importante destacar que na Figura \ref*{fig:tabelaNumericaQ1}
+os valores foram arrendondados para a segunda casa decimal para facilitar a leitura.
+O erro percentual com a solução analítica é dado por 
 
 \begin{equation}\label{eq:erroPercentual}
     E_{\%} = \frac{V_{\un{numerico}} - V_{\un{analitico}}}{V_{\un{analitico}}} 100\%
@@ -216,12 +219,39 @@ Em particular, na Figura \ref*{fig:tabelaNumericaQ1}, obtemos
 
 Assim, para $y = 3 \un{cm}$ em $t = 0.5 \un{s}$ temos erro  
 
-\[ E_{\%} = \frac{0.10 - 0.096}{0.096} 100\% = 4.2\% \]
+\[ E_{\%} = \frac{0.1049 - 0.0963}{0.0963} 100\% = 8.9\% \]
 
 \noindent e para $y = 3 \un{cm}$ em $t = 1 \un{s}$,
 
-\[ E_{\%} = \frac{0.25- 0.24}{0.24} 100\% = 4.2\% \]
+\[ E_{\%} = \frac{0.2455 - 0.2396}{0.2396} 100\% = 2.5\% \]
 
-\noindent com ambos erros inferiores a $5\%$ em relação ao resultado analítico. Assim, podemos
-concluir que o modelo numérico é satisfatório.
+\noindent com ambos erros inferiores a $10\%$ em relação ao resultado analítico. Podemos recalcular
+esses valores para diferentes malhas, isto é, para diferentes valores de $\Delta t$ e
+$\Delta y$. No software, basta alterar as variáveis no início do código e refazer
+a simulação. A Figura \ref*{fig:testeDeMalhas} mostra o resultado desse teste de malhas.
+
+\begin{figure}[h!]
+    \caption{Erros percentuais com a solução analítica para diferentes malhas.}
+    \label{fig:testeDeMalhas}
+    \centering
+    \centerline{\includegraphics[scale=0.50]{testeDeMalhas.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+Na Figura \ref*{fig:testeDeMalhas}, os erros percentuais nas duas últimas colunas
+foram calculados com \eqref{eq:erroPercentual}. A terceira coluna se refere ao critério de estabilidade 
+da inequação \eqref{eq:Q1estabilidade}. É interessante ver, nas linhas 3 e 4 da tabela, 
+que quando esse valor ultrapassa $0.5$ a solução diverge, apresentando erros 
+percentuais muito grandes. 
+
+Por outro lado, como mostram as duas últimas linhas da tabela, o 
+refinamento da malha (de modo que a estabilidade continue menor que $0.5$) resultou em uma grande
+redução dos erros em relação à solução analítica, obtendo erros inferiores a $1\%$ na última linha.
+Por fim, o melhor resultado obtido com o modelo numérico, como mostra a última linha da tabela,
+foi com $\Delta y = 25 \un{mm}$ e $\Delta t = 50 \un{ms}$, obtendo 
+
+\[ u(3 \un{cm}, 0.5 \un{s}) = 0.0969 \un{m/s} \]
+\[ u(3 \un{cm}, 1 \un{s}) = 0.2403 \un{m/s} \]
+
+
 
