@@ -6,6 +6,16 @@
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
 
+A Figura \ref*{fig:geometriaQ4} exibe a geometria do Problema 4.
+
+\begin{figure}[h!]
+    \caption{Geometria da questão 4.}
+    \label{fig:geometriaQ4}
+    \centering
+    \centerline{\includegraphics[scale=0.35]{geometriaQ4.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
 De modo parecido à modelagem do Prolema 3, temos que partir das equações de Navier-Stokes e 
 da equação de conservação da massa, assumindo escoamento incompressível. 
 Podemos fazer as seguintes simplificações:
@@ -68,8 +78,8 @@ de ar de baixo para cima. Assim, temos
 
 \begin{equation}\label{eq:q4SouthBoundary}
     \begin{cases}
-        u(x, 0) = 0, & 0 \leq x \leq 20 \un{cm}  \\
-        v(x, 0) = 0, & 0 \leq x \leq 10 \un{cm}  \\
+        u(x, 0) = 0 \un{m/s}, & 0 \leq x \leq 20 \un{cm}  \\
+        v(x, 0) = 0 \un{m/s}, & 0 \leq x \leq 10 \un{cm}  \\
         v(x, 0) = 0.02 \un{m/s}, & 10 \leq x \leq 20 \un{cm}  \\
     \end{cases}
 \end{equation}
@@ -80,8 +90,8 @@ de $v$ em ambas faces é a mesma.
 
 \begin{equation}\label{eq:q4NorthBoundary}
     \begin{cases}
-        u(x, 1 \un{cm}) = 0, & 0 \leq x \leq 20 \un{cm}  \\
-        v(x, 1 \un{cm}) = 0, & 0 \leq x \leq 10 \un{cm}  \\
+        u(x, 1 \un{cm}) = 0 \un{m/s}, & 0 \leq x \leq 20 \un{cm}  \\
+        v(x, 1 \un{cm}) = 0 \un{m/s}, & 0 \leq x \leq 10 \un{cm}  \\
         v(x, 1 \un{cm}) = 0.02 \un{m/s}, & 10 \leq x \leq 20 \un{cm}  \\
     \end{cases}
 \end{equation}
@@ -146,9 +156,9 @@ distibuição do campo de velocidades simulado. Os vetores da imagem foram escal
 \end{figure}
 
 A distribuição na Figura \ref*{fig:velocidades} é condizente com o esperado fisicamente. Quando 
-o fluido de alta velocidade entra no espaço entra as placas, o escoamento apresenta um perfil
+o fluido de alta velocidade entra no espaço entre as placas, o escoamento apresenta um perfil
 parabólico, e conforme o fluido avança no espaço entre as placas na direção $x$ a 
-velocidade vai se reduzindo. Ao atingir o centro do tubo ($x = 10 \un{cm}$), a injeção
+velocidade vai reduzindo. Ao atingir o centro do tubo ($x = 10 \un{cm}$), a injeção
 vertical de ar através da face sul porosa deforma o perfil até então parabólico do escoamento.
 De fato, para $x \geq 10 \un{cm}$, temos uma distribuição de velocidades como uma parábola deslocada
 para cima, resultado da força para cima exercida pelo ar injetado.
@@ -175,8 +185,8 @@ da injeção de ar.
     \caption{Perfil de velocidades ao longo linhas verticais $i = 4$ e $i = 15$ no tubo.}
     \label{fig:velocidadesLinha}
     \centering
-    \centerline{\includegraphics[scale=0.5]{velocidadeLinha4.png}}
-    \centerline{\includegraphics[scale=0.5]{velocidadeLinha15.png}}
+    \centerline{\includegraphics[scale=0.4]{velocidadeLinha4.png}}
+    \centerline{\includegraphics[scale=0.4]{velocidadeLinha15.png}}
     \par{Fonte: elaboração própria.}
 \end{figure}
 
