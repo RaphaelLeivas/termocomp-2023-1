@@ -31,7 +31,19 @@ Com um gradiente de pressão constante, temos que a velocidade axial $u$
 \noindent onde $R$ é o raio da tubulação por onde o fluido está escoando. Quando
 $r = R$ estamos em contato com as paredes da tubulação, que naturalmente têm
 velocidade nula. A primeira condição de contorno (simetria) é consequência do sistema de coordenadas
-cilíndricas adotado.
+cilíndricas adotado. A Figura \ref*{fig:geometriaQ2} exibe a geometria do problema analisado.
+
+\begin{figure}[h!]
+    \caption{Geometria da questão 2.}
+    \label{fig:geometriaQ2}
+    \centering
+    \centerline{\includegraphics[scale=0.35]{geometriaQ2.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+Note, na Figura \ref*{fig:geometriaQ2}, que estamos analisando o problema em apenas uma dimensão. Como o escoamento
+é simétrico em todas as linhas radias do centro à parede, basta analisar o que acontece em uma delas para modelar o 
+escoamento inteiro.
 
 Como \eqref{eq:modeloQ2} é uma EDO de primeira ordem, podemos tentar obter uma solução
 analítica por integração direta.
@@ -78,7 +90,7 @@ No problema temos os seguintes parâmetros:
 \end{itemize}
 
 Com esses parâmetros, a Figura \ref*{fig:graficoAnaliticoQ2} mostra o perfil
-de velocidade dentro da tubulação conforme a solução analítica em
+de velocidade em função da posição radial $r$ dentro da tubulação conforme a solução analítica em
 \eqref{eq:Q2Analitic}.
 
 \begin{figure}[h!]
