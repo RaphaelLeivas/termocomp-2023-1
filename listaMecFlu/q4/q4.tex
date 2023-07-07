@@ -110,6 +110,9 @@ As configurações usadas no software foram as seguintes:
     \item Solver utilizado: Gauss Seidel
 \end{itemize}
 
+As demais configurações do software foram as padrões para escoamento sem transferência de calor,
+seguindo os passos do Assistente de Problema CFD.
+
 As condições iniciais são $u = v = 0$ em todo o domínio pois o regime de escoamento é permanente.
 O material selecionado foi ar, com propriedades de viscosidade $\mu=1.85 \cdot 10^{-5} \un{ kg m$^{-1}$ s$^{-1}$}$ e
 massa específica $\rho=1.161 \un{kg m$^{-3}$}$.
@@ -184,6 +187,27 @@ para cima.
 A última análise que podemos fazer com o CFD Studio é o teste de malhas. Os resultados acima 
 foram obtidos com uma malha $20 \times 10$, totalizando 200 nós. Vamos refazer a simulação com
 uma malha $100 \times 50$, com 5000 nós, para verificar o impacto do refinamento da malha nos resultados.
+A distribuição de velocidades obtida com essa malha foi está exibida na 
+
+\begin{figure}[h!]
+    \caption{Perfil de velocidades obtido com a malha $100 \times 50$.}
+    \label{fig:velocidadeFina}
+    \centering
+    \centerline{\includegraphics[scale=0.5]{velocidadeFina.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+Comparando as Figuras  \ref*{fig:velocidades} e \ref*{fig:velocidadeFina}, temos que as velocidades
+calculadas na entrada e no início da região porosa são similares. A principal diferença observada
+é que, na malha $100 \times 50$, o escoamento praticamente se encerrou em $x = 5 \un{cm}$, sendo retomado
+apenas quando ocorre a injeção de ar a partir de $x \geq 10 \un{cm}$. Por outro lado,
+na entrada do tubo, temos um perfil muito mais detalhado da distribuição de velocidades quando o ar
+inicialmente entra no espaço entre as placas.
+
+É importante destacar que a simulação feita na Figura \ref*{fig:velocidadeFina} foi com apenas 1000 iterações,
+ao passo que a iteração da Figura  \ref*{fig:velocidades} teve 5000. Isso foi feito pois, com o aumento no número 
+de nós, o tempo gasto por iteração aumentou consideravelmente. Para executar as 1000 iterações na nova malha, foi gasto quase
+2 minutos.
 
 
 
