@@ -66,7 +66,20 @@ Assim, temos as seguintes condições de contorno para \eqref{eq:q3modelo}:
     \end{cases}
 \end{equation}
 
-De modo semelhante ao feito na Questão 3, podemos tentar obter uma solução analítica
+A Figura \ref*{fig:geometriaQ3} exibe a geometria do Problema 3, para melhor visualizar as 
+condições de contorno e o sistema de coordenadas adotado. Veja que, novamente por simetria,
+precisamos analisar apenas o que acontece em uma linha vertical da placa inferior até a placa
+superior para modelar o escoamento inteiro.
+
+\begin{figure}[h!]
+    \caption{Geometria da questão 3.}
+    \label{fig:geometriaQ3}
+    \centering
+    \centerline{\includegraphics[scale=0.3]{geometriaQ3.png}}
+    \par{Fonte: elaboração própria.}
+\end{figure}
+
+De modo semelhante ao feito na Questão 2, podemos tentar obter uma solução analítica
 para o modelo através de integração direta, assumindo que o gradiente de pressão 
 na direção do escoamento $\diff{p}{x}$ é constante.
 
@@ -153,10 +166,10 @@ Vamos discretizar \eqref{eq:q3modelo} com o método das difenças finitas. Note 
 usamos o diferencial de pressão como constante, logo ele não precisa ser discretizado.
 Além disso, como o regime é permanente, usamos o método implícito.
 
-\[ \frac{u_{i+1} - 2u_i + u_{i-1}}{\left(\Delta y\right)^2} = \diff{p}{x} \]
+\[ \frac{u_{i+1} - 2u_i + u_{i-1}}{\left(\Delta y\right)^2} = \diff{p}{x} \frac{1}{\mu} \]
 
 \begin{equation}\label{eq:q3Discretizada}
-    u_{i+1} - 2u_i + u_{i-1} = \left(\Delta y\right)^2\diff{p}{x}
+    u_{i+1} - 2u_i + u_{i-1} = \left(\Delta y\right)^2\diff{p}{x} \frac{1}{\mu}
 \end{equation}
 
 A equação \eqref{eq:q3Discretizada} é a equação para todos os nós internos no domínio. Nos contornos,
@@ -194,7 +207,7 @@ as curvas obtidas analiticamente e numericamente para vários valores de $N$, on
 \end{figure*}
 
 De modo bastante semelhante ao visto no Problema 2, na Figura \ref*{fig:graficoNumericoQ3} (a) vemos que
-o baixo de valor $N$ resulta em um modelo de baixa exatidão, com o baixo número de pontos discretizados tornando
+o baixo de valor $N$ resulta em um modelo de pouca exatidão, com o baixo número de pontos discretizados tornando
 as aproximações lineares insuficientes para modelar a solução analítica, que é quadrática.
 
 Conforme o valor de $N$ aumenta, temos que as aproximações ficam cada vez melhores, e a partir $N \geq 10$ o modelo

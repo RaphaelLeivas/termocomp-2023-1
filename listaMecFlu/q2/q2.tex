@@ -175,7 +175,7 @@ nó em contato com as paredes. Em seguida usamos a seguinte metodologia:
 \end{itemize}
 
 Uma vez calculados todos os coeficientes, teremos uma matriz de coeficientes $A$ de dimensão $N \times N$, onde
-$N = R / \Delta y$, e um vetor de coeficientes independentes $B$ de dimensão $N \times 1$.
+$N = R / \Delta r$, e um vetor de coeficientes independentes $B$ de dimensão $N \times 1$.
 O vetor solução $X$, que contém as velocidades $u$ de cada nó, tem dimensão $N \times 1$ e é calculado através da
 equação matricial
 
@@ -187,22 +187,22 @@ O pseudocódigo abaixo mostra a ideia principal do software desenvolvido em R qu
 essa solução numérica. O software completo pode ser visto no ANEXO B.
 
 \begin{algorithmic}
-    \State N $\gets$ $R / \Delta y$
+    \State N $\gets$ $R / \Delta r$
     \State A $\gets$ Matriz($N \times N$)
     \State B $\gets$ Vetor($N \times 1$)
     \State $i \gets 0$
-    \For{\texttt{cada $\Delta y$ em $R$}}
-        \If{$\Delta y$ atual é nó interno}
+    \For{\texttt{cada $\Delta r$ em $R$}}
+        \If{$\Delta r$ atual é nó interno}
             \State A[linha $i$] $\gets$ equação \eqref{eq:Q2implicit}
             \State B[$i$] $\gets$ equação \eqref{eq:Q2implicit}
         \EndIf
 
-        \If{$\Delta y$ atual é parede}
+        \If{$\Delta r$ atual é parede}
             \State A[linha $i$] $\gets$ equação \eqref{eq:Q2implicitBoundary}
             \State B[$i$] $\gets$ equação \eqref{eq:Q2implicitBoundary}
         \EndIf
 
-        \If{$\Delta y$ atual é nó central}
+        \If{$\Delta r$ atual é nó central}
             \State A[linha $i$] $\gets$ equação \eqref{eq:Q2implicitSimetria}
             \State B[$i$] $\gets$ equação \eqref{eq:Q2implicitSimetria}
         \EndIf
@@ -217,7 +217,7 @@ essa solução numérica. O software completo pode ser visto no ANEXO B.
 
 Ao contrário do problema 1, temos apenas um loop no código. Não temos marcha no tempo uma vez
 que o regime de escoamento é permanente. Nesse caso, basta percorrer cada intervalo
-$\Delta y$ em $R$, identificar a natureza nesse nó, calcular os coeficientes, jogar nas matrizes
+$\Delta r$ em $R$, identificar a natureza nesse nó, calcular os coeficientes, jogar nas matrizes
 $A$ e $B$ e resolver a equação matricial.
 
 A Figura \ref*{fig:graficoNumericoQ2} mostra uma comparação entre os valores numéricos obtidos no código 

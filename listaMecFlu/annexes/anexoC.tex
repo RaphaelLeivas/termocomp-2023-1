@@ -1,0 +1,48 @@
+\section*{Anexo C}
+
+Neste anexo está o código completo desenvolvido em R na questão 3. O código usado para gerar os gráficos não está exibido.
+
+\begin{lstlisting}
+  dpdx <- -178800
+  mu <- 1.49
+  h <- 5 * 10^-3
+  U <- 1
+  N <- 20 # numero de pontos analisados 
+  dy <- 2 * h/N # passo no espaco
+
+  N <- N + 1 # ajuste posicao incial
+
+  y_seq <- seq(from = -h, to = h, by = dy)
+
+  A <- matrix(0, ncol = N, nrow = N)
+  b <- rep(0, N)
+  
+  line <- 0
+  
+  for (yi in y_seq) {
+    line <- line + 1
+    
+    if (yi == -h) {
+      # condicao de contorno placa de baixo
+      # u0 = 0 ==> 1 * u0 = 0
+      
+      A[line, line] <- 1
+      b[line] <- 0
+    } else if (yi == h) {
+      # condicao de contorno placa de cima
+      # uN = U ==> 1 * uN = U
+      
+      A[line, line] <- 1
+      b[line] <- U
+    } else {
+      # no interno, usa  a equacao de diferencas finitas deduzida
+      A[line, line + 1] <- 1
+      A[line, line] <- -2
+      A[line, line - 1] <- 1
+      
+      b[line] <- (dpdx / mu) * dy^2
+    }
+  }
+  
+  u_numerical <- solve(A) %*% b
+\end{lstlisting}
